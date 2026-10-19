@@ -10,33 +10,102 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ConnexionRouteImport } from './routes/connexion'
+import { Route as EspaceAdminRouteImport } from './routes/espace-admin'
+import { Route as EspaceMedecinRouteImport } from './routes/espace-medecin'
+import { Route as EspacePatientRouteImport } from './routes/espace-patient'
+import { Route as InscriptionRouteImport } from './routes/inscription'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConnexionRoute = ConnexionRouteImport.update({
+  id: '/connexion',
+  path: '/connexion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EspaceAdminRoute = EspaceAdminRouteImport.update({
+  id: '/espace-admin',
+  path: '/espace-admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EspaceMedecinRoute = EspaceMedecinRouteImport.update({
+  id: '/espace-medecin',
+  path: '/espace-medecin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EspacePatientRoute = EspacePatientRouteImport.update({
+  id: '/espace-patient',
+  path: '/espace-patient',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InscriptionRoute = InscriptionRouteImport.update({
+  id: '/inscription',
+  path: '/inscription',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/connexion': typeof ConnexionRoute
+  '/espace-admin': typeof EspaceAdminRoute
+  '/espace-medecin': typeof EspaceMedecinRoute
+  '/espace-patient': typeof EspacePatientRoute
+  '/inscription': typeof InscriptionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/connexion': typeof ConnexionRoute
+  '/espace-admin': typeof EspaceAdminRoute
+  '/espace-medecin': typeof EspaceMedecinRoute
+  '/espace-patient': typeof EspacePatientRoute
+  '/inscription': typeof InscriptionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/connexion': typeof ConnexionRoute
+  '/espace-admin': typeof EspaceAdminRoute
+  '/espace-medecin': typeof EspaceMedecinRoute
+  '/espace-patient': typeof EspacePatientRoute
+  '/inscription': typeof InscriptionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/connexion'
+    | '/espace-admin'
+    | '/espace-medecin'
+    | '/espace-patient'
+    | '/inscription'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/connexion'
+    | '/espace-admin'
+    | '/espace-medecin'
+    | '/espace-patient'
+    | '/inscription'
+  id:
+    | '__root__'
+    | '/'
+    | '/connexion'
+    | '/espace-admin'
+    | '/espace-medecin'
+    | '/espace-patient'
+    | '/inscription'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ConnexionRoute: typeof ConnexionRoute
+  EspaceAdminRoute: typeof EspaceAdminRoute
+  EspaceMedecinRoute: typeof EspaceMedecinRoute
+  EspacePatientRoute: typeof EspacePatientRoute
+  InscriptionRoute: typeof InscriptionRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +117,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/connexion': {
+      id: '/connexion'
+      path: '/connexion'
+      fullPath: '/connexion'
+      preLoaderRoute: typeof ConnexionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/espace-admin': {
+      id: '/espace-admin'
+      path: '/espace-admin'
+      fullPath: '/espace-admin'
+      preLoaderRoute: typeof EspaceAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/espace-medecin': {
+      id: '/espace-medecin'
+      path: '/espace-medecin'
+      fullPath: '/espace-medecin'
+      preLoaderRoute: typeof EspaceMedecinRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/espace-patient': {
+      id: '/espace-patient'
+      path: '/espace-patient'
+      fullPath: '/espace-patient'
+      preLoaderRoute: typeof EspacePatientRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inscription': {
+      id: '/inscription'
+      path: '/inscription'
+      fullPath: '/inscription'
+      preLoaderRoute: typeof InscriptionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ConnexionRoute: ConnexionRoute,
+  EspaceAdminRoute: EspaceAdminRoute,
+  EspaceMedecinRoute: EspaceMedecinRoute,
+  EspacePatientRoute: EspacePatientRoute,
+  InscriptionRoute: InscriptionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
