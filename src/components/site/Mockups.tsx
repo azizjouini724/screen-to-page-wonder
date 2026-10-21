@@ -40,7 +40,7 @@ export function DashboardPreview() {
       <aside className="flex w-12 flex-col items-center gap-3 bg-deep py-3 sm:w-36 sm:items-stretch sm:px-3">
         <div className="flex items-center gap-1.5 text-deep-foreground"><img src={logo} alt="" className="h-6 w-6 rounded bg-card p-0.5" /><span className="hidden font-bold sm:inline">Clinic Copilot</span></div>
         {["Accueil", "Assistant IA", "Rendez-vous", "Messages", "Rappels", "Paramètres"].map((l, i) => {
-          const I = side[i];
+          const I = side[i]!;
           return <div key={l} className={cn("flex items-center gap-2 rounded-md p-1.5 text-deep-foreground/70", i === 0 && "bg-primary text-primary-foreground")}><I className="h-3.5 w-3.5 shrink-0" /><span className="hidden sm:inline">{l}</span></div>;
         })}
       </aside>
