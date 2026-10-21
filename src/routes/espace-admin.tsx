@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PlaceholderPage } from "@/components/site/PlaceholderPage";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { SpaceHome } from "@/components/site/SpaceHome";
 
 export const Route = createFileRoute("/espace-admin")({
   head: () => ({
@@ -10,7 +11,8 @@ export const Route = createFileRoute("/espace-admin")({
       { property: "og:description", content: "Supervisez et administrez Clinic Copilot." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "robots", content: "noindex" },
     ],
   }),
-  component: () => <PlaceholderPage title="Espace Administrateur" />,
+  component: () => <ProtectedRoute role="admin"><SpaceHome /></ProtectedRoute>,
 });

@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PlaceholderPage } from "@/components/site/PlaceholderPage";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { SpaceHome } from "@/components/site/SpaceHome";
 
 export const Route = createFileRoute("/espace-patient")({
   head: () => ({
@@ -10,7 +11,8 @@ export const Route = createFileRoute("/espace-patient")({
       { property: "og:description", content: "Votre espace patient Clinic Copilot." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "robots", content: "noindex" },
     ],
   }),
-  component: () => <PlaceholderPage title="Espace Patient" />,
+  component: () => <ProtectedRoute role="patient"><SpaceHome /></ProtectedRoute>,
 });
