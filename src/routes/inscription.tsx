@@ -129,7 +129,7 @@ function InscriptionPage() {
               <FormField control={form.control} name="consent" render={({ field }) => (
                 <FormItem className="rounded-xl border border-border bg-card p-4">
                   <div className="flex items-start gap-3">
-                    <FormControl><Checkbox className="mt-0.5" checked={field.value} onCheckedChange={(c) => field.onChange(c === true)} /></FormControl>
+                    <FormControl><Checkbox className="mt-0.5" checked={field.value ?? false} onCheckedChange={(c) => field.onChange(c === true)} /></FormControl>
                     <FormLabel className="font-normal leading-relaxed">
                       J'accepte le traitement de mes données de santé pour recevoir une orientation et gérer mes rendez-vous.{" "}
                       <a href="/#securite" className="font-semibold text-primary hover:underline">En savoir plus</a>
@@ -144,7 +144,7 @@ function InscriptionPage() {
               <div className="grid gap-5 sm:grid-cols-2">
                 <FormField control={form.control} name="specialty" render={({ field }) => (
                   <FormItem><FormLabel>Spécialité</FormLabel>
-                    <Select value={field.value} onValueChange={field.onChange}>
+                    <Select value={field.value ?? ""} onValueChange={field.onChange}>
                       <FormControl><SelectTrigger className="h-11 bg-card"><SelectValue placeholder="Choisir une spécialité" /></SelectTrigger></FormControl>
                       <SelectContent>{specialties.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent>
                     </Select><FormMessage /></FormItem>
