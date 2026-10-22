@@ -1,4 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { toast } from "sonner";
 import { Bot, ShieldAlert, ArrowRight, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/site/Header";
@@ -13,6 +15,7 @@ import { features, steps, urgencyLevels, security } from "@/data/landing";
 import soignante from "@/assets/soignante.jpg";
 
 export const Route = createFileRoute("/")({
+  validateSearch: (s: Record<string, unknown>): { invite?: boolean } => (s.invite === true || s.invite === "true" ? { invite: true } : {}),
   head: () => ({
     meta: [
       { title: "Clinic Copilot · De vos symptômes, vers les bons soins" },
@@ -27,6 +30,14 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const { invite } = Route.useSearch();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (invite) {
+      toast.info("Vous naviguez en tant qu'invité", { description: "Créez un compte pour réserver un rendez-vous : l'invité ne peut pas réserver." });
+      navigate({ to: "/", search: {}, replace: true });
+    }
+  }, [invite, navigate]);
   return (
     <div className="min-h-screen">
       <Header />

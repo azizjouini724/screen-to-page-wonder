@@ -1,9 +1,31 @@
 import { useState } from "react";
-import { Link } from "@tanstack/react-router";
-import { Menu, X } from "lucide-react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { LogOut, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "./Logo";
 import { navLinks } from "@/data/landing";
+import { useAuth } from "@/context/AuthContext";
+import { roleHome } from "@/lib/auth";
+
+function AuthActions({ mobile }: { mobile?: boolean }) {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  if (user) {
+    return (
+      <>
+        <span className={mobile ? "col-span-2 text-sm text-muted-foreground" : "text-sm text-muted-foreground"}>Bonjour, <span className="font-semibold text-deep">{user.firstName}</span></span>
+        <Button variant="hero" asChild><Link to={roleHome[user.role]}>Mon espace</Link></Button>
+        <Button variant="soft" onClick={() => { logout(); navigate({ to: "/" }); }}><LogOut />Se déconnecter</Button>
+      </>
+    );
+  }
+  return (
+    <>
+      <Button variant={mobile ? "soft" : "ghost"} asChild><Link to="/connexion">Se connecter</Link></Button>
+      <Button variant="hero" asChild><Link to="/inscription">Commencer</Link></Button>
+    </>
+  );
+}
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -16,10 +38,7 @@ export function Header() {
             <a key={l.href} href={`/${l.href}`} className="text-sm font-medium text-muted-foreground transition-colors duration-200 hover:text-primary">{l.label}</a>
           ))}
         </nav>
-        <div className="hidden items-center gap-2 lg:flex">
-          <Button variant="ghost" asChild><Link to="/connexion">Se connecter</Link></Button>
-          <Button variant="hero" asChild><Link to="/inscription">Commencer</Link></Button>
-        </div>
+        <div className="hidden items-center gap-2 lg:flex"><AuthActions /></div>
         <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setOpen(!open)} aria-label={open ? "Fermer le menu" : "Ouvrir le menu"} aria-expanded={open}>
           {open ? <X /> : <Menu />}
         </Button>
@@ -31,10 +50,7 @@ export function Header() {
               <a key={l.href} href={`/${l.href}`} onClick={() => setOpen(false)} className="rounded-lg px-3 py-3 font-medium text-foreground hover:bg-soft">{l.label}</a>
             ))}
           </nav>
-          <div className="mt-4 grid grid-cols-2 gap-3">
-            <Button variant="soft" asChild><Link to="/connexion">Se connecter</Link></Button>
-            <Button variant="hero" asChild><Link to="/inscription">Commencer</Link></Button>
-          </div>
+          <div className="mt-4 grid grid-cols-2 gap-3"><AuthActions mobile /></div>
         </div>
       )}
     </header>
