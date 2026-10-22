@@ -15,7 +15,7 @@ import { features, steps, urgencyLevels, security } from "@/data/landing";
 import soignante from "@/assets/soignante.jpg";
 
 export const Route = createFileRoute("/")({
-  validateSearch: (s: Record<string, unknown>): { invite?: boolean } => (s.invite === true || s.invite === "true" ? { invite: true } : {}),
+  validateSearch: (s: Record<string, unknown>): { invite?: boolean } => (s["invite"] === true || s["invite"] === "true" ? { invite: true } : {}),
   head: () => ({
     meta: [
       { title: "Clinic Copilot · De vos symptômes, vers les bons soins" },
