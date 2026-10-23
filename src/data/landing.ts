@@ -32,7 +32,7 @@ export const steps: { icon: LucideIcon; title: string; text: string }[] = [
 export type UrgencyLevel = "urgence" | "urgent" | "courant" | "conseil";
 
 export const urgencyLevels: { level: UrgencyLevel; icon: LucideIcon; title: string; text: string }[] = [
-  { level: "urgence", icon: Siren, title: "Urgence", text: "Appelez immédiatement les urgences (15 ou 112). Aucune réservation n'est proposée." },
+  { level: "urgence", icon: Siren, title: "Urgence", text: "Appelez immédiatement les urgences (190, SAMU). Aucune réservation n'est proposée." },
   { level: "urgent", icon: AlertTriangle, title: "Urgent", text: "Consultation recommandée dans les 24 heures avec un créneau prioritaire." },
   { level: "courant", icon: HeartPulse, title: "Courant", text: "Prenez rendez-vous avec un médecin dans les prochains jours." },
   { level: "conseil", icon: Leaf, title: "Conseil général", text: "Conseils de prévention et d'auto-soin, à surveiller." },

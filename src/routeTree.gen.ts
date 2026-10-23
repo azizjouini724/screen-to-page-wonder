@@ -16,6 +16,14 @@ import { Route as EspaceMedecinRouteImport } from './routes/espace-medecin'
 import { Route as EspacePatientRouteImport } from './routes/espace-patient'
 import { Route as InscriptionRouteImport } from './routes/inscription'
 import { Route as MotDePasseOublieRouteImport } from './routes/mot-de-passe-oublie'
+import { Route as EspacePatientIndexRouteImport } from './routes/espace-patient.index'
+import { Route as EspacePatientAssistantRouteImport } from './routes/espace-patient.assistant'
+import { Route as EspacePatientMedecinsRouteImport } from './routes/espace-patient.medecins'
+import { Route as EspacePatientMessagesRouteImport } from './routes/espace-patient.messages'
+import { Route as EspacePatientParametresRouteImport } from './routes/espace-patient.parametres'
+import { Route as EspacePatientProfilRouteImport } from './routes/espace-patient.profil'
+import { Route as EspacePatientRappelsRouteImport } from './routes/espace-patient.rappels'
+import { Route as EspacePatientRendezVousRouteImport } from './routes/espace-patient.rendez-vous'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,24 +60,79 @@ const MotDePasseOublieRoute = MotDePasseOublieRouteImport.update({
   path: '/mot-de-passe-oublie',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EspacePatientIndexRoute = EspacePatientIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => EspacePatientRoute,
+} as any)
+const EspacePatientAssistantRoute = EspacePatientAssistantRouteImport.update({
+  id: '/assistant',
+  path: '/assistant',
+  getParentRoute: () => EspacePatientRoute,
+} as any)
+const EspacePatientMedecinsRoute = EspacePatientMedecinsRouteImport.update({
+  id: '/medecins',
+  path: '/medecins',
+  getParentRoute: () => EspacePatientRoute,
+} as any)
+const EspacePatientMessagesRoute = EspacePatientMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => EspacePatientRoute,
+} as any)
+const EspacePatientParametresRoute = EspacePatientParametresRouteImport.update({
+  id: '/parametres',
+  path: '/parametres',
+  getParentRoute: () => EspacePatientRoute,
+} as any)
+const EspacePatientProfilRoute = EspacePatientProfilRouteImport.update({
+  id: '/profil',
+  path: '/profil',
+  getParentRoute: () => EspacePatientRoute,
+} as any)
+const EspacePatientRappelsRoute = EspacePatientRappelsRouteImport.update({
+  id: '/rappels',
+  path: '/rappels',
+  getParentRoute: () => EspacePatientRoute,
+} as any)
+const EspacePatientRendezVousRoute = EspacePatientRendezVousRouteImport.update({
+  id: '/rendez-vous',
+  path: '/rendez-vous',
+  getParentRoute: () => EspacePatientRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/connexion': typeof ConnexionRoute
   '/espace-admin': typeof EspaceAdminRoute
   '/espace-medecin': typeof EspaceMedecinRoute
-  '/espace-patient': typeof EspacePatientRoute
+  '/espace-patient': typeof EspacePatientRouteWithChildren
   '/inscription': typeof InscriptionRoute
   '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
+  '/espace-patient/assistant': typeof EspacePatientAssistantRoute
+  '/espace-patient/medecins': typeof EspacePatientMedecinsRoute
+  '/espace-patient/messages': typeof EspacePatientMessagesRoute
+  '/espace-patient/parametres': typeof EspacePatientParametresRoute
+  '/espace-patient/profil': typeof EspacePatientProfilRoute
+  '/espace-patient/rappels': typeof EspacePatientRappelsRoute
+  '/espace-patient/rendez-vous': typeof EspacePatientRendezVousRoute
+  '/espace-patient/': typeof EspacePatientIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/connexion': typeof ConnexionRoute
   '/espace-admin': typeof EspaceAdminRoute
   '/espace-medecin': typeof EspaceMedecinRoute
-  '/espace-patient': typeof EspacePatientRoute
   '/inscription': typeof InscriptionRoute
   '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
+  '/espace-patient/assistant': typeof EspacePatientAssistantRoute
+  '/espace-patient/medecins': typeof EspacePatientMedecinsRoute
+  '/espace-patient/messages': typeof EspacePatientMessagesRoute
+  '/espace-patient/parametres': typeof EspacePatientParametresRoute
+  '/espace-patient/profil': typeof EspacePatientProfilRoute
+  '/espace-patient/rappels': typeof EspacePatientRappelsRoute
+  '/espace-patient/rendez-vous': typeof EspacePatientRendezVousRoute
+  '/espace-patient': typeof EspacePatientIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -77,9 +140,17 @@ export interface FileRoutesById {
   '/connexion': typeof ConnexionRoute
   '/espace-admin': typeof EspaceAdminRoute
   '/espace-medecin': typeof EspaceMedecinRoute
-  '/espace-patient': typeof EspacePatientRoute
+  '/espace-patient': typeof EspacePatientRouteWithChildren
   '/inscription': typeof InscriptionRoute
   '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
+  '/espace-patient/assistant': typeof EspacePatientAssistantRoute
+  '/espace-patient/medecins': typeof EspacePatientMedecinsRoute
+  '/espace-patient/messages': typeof EspacePatientMessagesRoute
+  '/espace-patient/parametres': typeof EspacePatientParametresRoute
+  '/espace-patient/profil': typeof EspacePatientProfilRoute
+  '/espace-patient/rappels': typeof EspacePatientRappelsRoute
+  '/espace-patient/rendez-vous': typeof EspacePatientRendezVousRoute
+  '/espace-patient/': typeof EspacePatientIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,15 +162,30 @@ export interface FileRouteTypes {
     | '/espace-patient'
     | '/inscription'
     | '/mot-de-passe-oublie'
+    | '/espace-patient/assistant'
+    | '/espace-patient/medecins'
+    | '/espace-patient/messages'
+    | '/espace-patient/parametres'
+    | '/espace-patient/profil'
+    | '/espace-patient/rappels'
+    | '/espace-patient/rendez-vous'
+    | '/espace-patient/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/connexion'
     | '/espace-admin'
     | '/espace-medecin'
-    | '/espace-patient'
     | '/inscription'
     | '/mot-de-passe-oublie'
+    | '/espace-patient/assistant'
+    | '/espace-patient/medecins'
+    | '/espace-patient/messages'
+    | '/espace-patient/parametres'
+    | '/espace-patient/profil'
+    | '/espace-patient/rappels'
+    | '/espace-patient/rendez-vous'
+    | '/espace-patient'
   id:
     | '__root__'
     | '/'
@@ -109,6 +195,14 @@ export interface FileRouteTypes {
     | '/espace-patient'
     | '/inscription'
     | '/mot-de-passe-oublie'
+    | '/espace-patient/assistant'
+    | '/espace-patient/medecins'
+    | '/espace-patient/messages'
+    | '/espace-patient/parametres'
+    | '/espace-patient/profil'
+    | '/espace-patient/rappels'
+    | '/espace-patient/rendez-vous'
+    | '/espace-patient/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -116,7 +210,7 @@ export interface RootRouteChildren {
   ConnexionRoute: typeof ConnexionRoute
   EspaceAdminRoute: typeof EspaceAdminRoute
   EspaceMedecinRoute: typeof EspaceMedecinRoute
-  EspacePatientRoute: typeof EspacePatientRoute
+  EspacePatientRoute: typeof EspacePatientRouteWithChildren
   InscriptionRoute: typeof InscriptionRoute
   MotDePasseOublieRoute: typeof MotDePasseOublieRoute
 }
@@ -172,15 +266,97 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MotDePasseOublieRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/espace-patient/': {
+      id: '/espace-patient/'
+      path: '/'
+      fullPath: '/espace-patient/'
+      preLoaderRoute: typeof EspacePatientIndexRouteImport
+      parentRoute: typeof EspacePatientRoute
+    }
+    '/espace-patient/assistant': {
+      id: '/espace-patient/assistant'
+      path: '/assistant'
+      fullPath: '/espace-patient/assistant'
+      preLoaderRoute: typeof EspacePatientAssistantRouteImport
+      parentRoute: typeof EspacePatientRoute
+    }
+    '/espace-patient/medecins': {
+      id: '/espace-patient/medecins'
+      path: '/medecins'
+      fullPath: '/espace-patient/medecins'
+      preLoaderRoute: typeof EspacePatientMedecinsRouteImport
+      parentRoute: typeof EspacePatientRoute
+    }
+    '/espace-patient/messages': {
+      id: '/espace-patient/messages'
+      path: '/messages'
+      fullPath: '/espace-patient/messages'
+      preLoaderRoute: typeof EspacePatientMessagesRouteImport
+      parentRoute: typeof EspacePatientRoute
+    }
+    '/espace-patient/parametres': {
+      id: '/espace-patient/parametres'
+      path: '/parametres'
+      fullPath: '/espace-patient/parametres'
+      preLoaderRoute: typeof EspacePatientParametresRouteImport
+      parentRoute: typeof EspacePatientRoute
+    }
+    '/espace-patient/profil': {
+      id: '/espace-patient/profil'
+      path: '/profil'
+      fullPath: '/espace-patient/profil'
+      preLoaderRoute: typeof EspacePatientProfilRouteImport
+      parentRoute: typeof EspacePatientRoute
+    }
+    '/espace-patient/rappels': {
+      id: '/espace-patient/rappels'
+      path: '/rappels'
+      fullPath: '/espace-patient/rappels'
+      preLoaderRoute: typeof EspacePatientRappelsRouteImport
+      parentRoute: typeof EspacePatientRoute
+    }
+    '/espace-patient/rendez-vous': {
+      id: '/espace-patient/rendez-vous'
+      path: '/rendez-vous'
+      fullPath: '/espace-patient/rendez-vous'
+      preLoaderRoute: typeof EspacePatientRendezVousRouteImport
+      parentRoute: typeof EspacePatientRoute
+    }
   }
 }
+
+interface EspacePatientRouteChildren {
+  EspacePatientAssistantRoute: typeof EspacePatientAssistantRoute
+  EspacePatientMedecinsRoute: typeof EspacePatientMedecinsRoute
+  EspacePatientMessagesRoute: typeof EspacePatientMessagesRoute
+  EspacePatientParametresRoute: typeof EspacePatientParametresRoute
+  EspacePatientProfilRoute: typeof EspacePatientProfilRoute
+  EspacePatientRappelsRoute: typeof EspacePatientRappelsRoute
+  EspacePatientRendezVousRoute: typeof EspacePatientRendezVousRoute
+  EspacePatientIndexRoute: typeof EspacePatientIndexRoute
+}
+
+const EspacePatientRouteChildren: EspacePatientRouteChildren = {
+  EspacePatientAssistantRoute: EspacePatientAssistantRoute,
+  EspacePatientMedecinsRoute: EspacePatientMedecinsRoute,
+  EspacePatientMessagesRoute: EspacePatientMessagesRoute,
+  EspacePatientParametresRoute: EspacePatientParametresRoute,
+  EspacePatientProfilRoute: EspacePatientProfilRoute,
+  EspacePatientRappelsRoute: EspacePatientRappelsRoute,
+  EspacePatientRendezVousRoute: EspacePatientRendezVousRoute,
+  EspacePatientIndexRoute: EspacePatientIndexRoute,
+}
+
+const EspacePatientRouteWithChildren = EspacePatientRoute._addFileChildren(
+  EspacePatientRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ConnexionRoute: ConnexionRoute,
   EspaceAdminRoute: EspaceAdminRoute,
   EspaceMedecinRoute: EspaceMedecinRoute,
-  EspacePatientRoute: EspacePatientRoute,
+  EspacePatientRoute: EspacePatientRouteWithChildren,
   InscriptionRoute: InscriptionRoute,
   MotDePasseOublieRoute: MotDePasseOublieRoute,
 }
