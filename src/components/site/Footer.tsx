@@ -9,7 +9,7 @@ export function Footer() {
         <div>
           <Logo dark />
           <p className="mt-4 text-lg font-semibold">L'IA oriente, le médecin décide.</p>
-          <p className="mt-2 text-sm text-deep-foreground/60">Orientation, pas un diagnostic. En cas d'urgence, appelez le 15 ou le 112.</p>
+          <p className="mt-2 text-sm text-deep-foreground/60">Orientation, pas un diagnostic. En cas d'urgence, appelez le 190 (SAMU).</p>
         </div>
         <nav aria-label="Liens du pied de page">
           <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-tertiary">Découvrir</p>
