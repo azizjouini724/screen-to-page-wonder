@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { AppointmentsProvider } from "@/context/AppointmentsContext";
 import { PatientLayout } from "@/components/patient/PatientLayout";
 
 export const Route = createFileRoute("/espace-patient")({
@@ -16,7 +17,7 @@ export const Route = createFileRoute("/espace-patient")({
   }),
   component: () => (
     <ProtectedRoute role="patient">
-      <PatientLayout><Outlet /></PatientLayout>
+      <AppointmentsProvider><PatientLayout><Outlet /></PatientLayout></AppointmentsProvider>
     </ProtectedRoute>
   ),
 });
