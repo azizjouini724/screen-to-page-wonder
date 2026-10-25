@@ -1,12 +1,5 @@
-export type Doctor = {
-  id: string; name: string; specialty: string; address: string; tone: "primary" | "info" | "accent";
-};
-
-export const doctors: Doctor[] = [
-  { id: "d-benali", name: "Dr. Amine Ben Ali", specialty: "Médecin généraliste", address: "12 rue de Marseille, El Menzah, Tunis", tone: "primary" },
-  { id: "d-mansouri", name: "Dr. Leila Mansouri", specialty: "Pneumologue", address: "45 avenue Habib Bourguiba, Tunis", tone: "info" },
-  { id: "d-trabelsi", name: "Dr. Youssef Trabelsi", specialty: "Médecin généraliste", address: "8 rue du Lac Léman, Les Berges du Lac", tone: "accent" },
-];
+export type { Doctor } from "./doctors";
+export { doctors } from "./doctors";
 
 export type AppointmentStatus = "confirme" | "attente" | "termine" | "annule";
 
@@ -22,6 +15,7 @@ export type PatientAppointment = {
   status: AppointmentStatus;
   cancelReason?: string;
   review?: Review;
+  createdAt?: string;
 };
 
 /** Créneaux proposés : du lundi au vendredi, 09:00 à 16:30, toutes les 30 minutes. */
