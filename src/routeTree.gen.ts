@@ -23,6 +23,8 @@ import { Route as EspacePatientParametresRouteImport } from './routes/espace-pat
 import { Route as EspacePatientProfilRouteImport } from './routes/espace-patient.profil'
 import { Route as EspacePatientRappelsRouteImport } from './routes/espace-patient.rappels'
 import { Route as EspacePatientRendezVousRouteImport } from './routes/espace-patient.rendez-vous'
+import { Route as EspacePatientMedecinsIndexRouteImport } from './routes/espace-patient.medecins.index'
+import { Route as EspacePatientMedecinsIdRouteImport } from './routes/espace-patient.medecins.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -94,6 +96,17 @@ const EspacePatientRendezVousRoute = EspacePatientRendezVousRouteImport.update({
   path: '/rendez-vous',
   getParentRoute: () => EspacePatientRoute,
 } as any)
+const EspacePatientMedecinsIndexRoute =
+  EspacePatientMedecinsIndexRouteImport.update({
+    id: '/medecins/',
+    path: '/medecins/',
+    getParentRoute: () => EspacePatientRoute,
+  } as any)
+const EspacePatientMedecinsIdRoute = EspacePatientMedecinsIdRouteImport.update({
+  id: '/medecins/$id',
+  path: '/medecins/$id',
+  getParentRoute: () => EspacePatientRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -110,6 +123,8 @@ export interface FileRoutesByFullPath {
   '/espace-patient/rappels': typeof EspacePatientRappelsRoute
   '/espace-patient/rendez-vous': typeof EspacePatientRendezVousRoute
   '/espace-patient/': typeof EspacePatientIndexRoute
+  '/espace-patient/medecins/$id': typeof EspacePatientMedecinsIdRoute
+  '/espace-patient/medecins/': typeof EspacePatientMedecinsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -125,6 +140,8 @@ export interface FileRoutesByTo {
   '/espace-patient/rappels': typeof EspacePatientRappelsRoute
   '/espace-patient/rendez-vous': typeof EspacePatientRendezVousRoute
   '/espace-patient': typeof EspacePatientIndexRoute
+  '/espace-patient/medecins/$id': typeof EspacePatientMedecinsIdRoute
+  '/espace-patient/medecins': typeof EspacePatientMedecinsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -142,6 +159,8 @@ export interface FileRoutesById {
   '/espace-patient/rappels': typeof EspacePatientRappelsRoute
   '/espace-patient/rendez-vous': typeof EspacePatientRendezVousRoute
   '/espace-patient/': typeof EspacePatientIndexRoute
+  '/espace-patient/medecins/$id': typeof EspacePatientMedecinsIdRoute
+  '/espace-patient/medecins/': typeof EspacePatientMedecinsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -160,6 +179,8 @@ export interface FileRouteTypes {
     | '/espace-patient/rappels'
     | '/espace-patient/rendez-vous'
     | '/espace-patient/'
+    | '/espace-patient/medecins/$id'
+    | '/espace-patient/medecins/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -175,6 +196,8 @@ export interface FileRouteTypes {
     | '/espace-patient/rappels'
     | '/espace-patient/rendez-vous'
     | '/espace-patient'
+    | '/espace-patient/medecins/$id'
+    | '/espace-patient/medecins'
   id:
     | '__root__'
     | '/'
@@ -191,6 +214,8 @@ export interface FileRouteTypes {
     | '/espace-patient/rappels'
     | '/espace-patient/rendez-vous'
     | '/espace-patient/'
+    | '/espace-patient/medecins/$id'
+    | '/espace-patient/medecins/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -303,6 +328,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EspacePatientRendezVousRouteImport
       parentRoute: typeof EspacePatientRoute
     }
+    '/espace-patient/medecins/': {
+      id: '/espace-patient/medecins/'
+      path: '/medecins'
+      fullPath: '/espace-patient/medecins/'
+      preLoaderRoute: typeof EspacePatientMedecinsIndexRouteImport
+      parentRoute: typeof EspacePatientRoute
+    }
+    '/espace-patient/medecins/$id': {
+      id: '/espace-patient/medecins/$id'
+      path: '/medecins/$id'
+      fullPath: '/espace-patient/medecins/$id'
+      preLoaderRoute: typeof EspacePatientMedecinsIdRouteImport
+      parentRoute: typeof EspacePatientRoute
+    }
   }
 }
 
@@ -314,6 +353,8 @@ interface EspacePatientRouteChildren {
   EspacePatientRappelsRoute: typeof EspacePatientRappelsRoute
   EspacePatientRendezVousRoute: typeof EspacePatientRendezVousRoute
   EspacePatientIndexRoute: typeof EspacePatientIndexRoute
+  EspacePatientMedecinsIdRoute: typeof EspacePatientMedecinsIdRoute
+  EspacePatientMedecinsIndexRoute: typeof EspacePatientMedecinsIndexRoute
 }
 
 const EspacePatientRouteChildren: EspacePatientRouteChildren = {
@@ -324,6 +365,8 @@ const EspacePatientRouteChildren: EspacePatientRouteChildren = {
   EspacePatientRappelsRoute: EspacePatientRappelsRoute,
   EspacePatientRendezVousRoute: EspacePatientRendezVousRoute,
   EspacePatientIndexRoute: EspacePatientIndexRoute,
+  EspacePatientMedecinsIdRoute: EspacePatientMedecinsIdRoute,
+  EspacePatientMedecinsIndexRoute: EspacePatientMedecinsIndexRoute,
 }
 
 const EspacePatientRouteWithChildren = EspacePatientRoute._addFileChildren(
