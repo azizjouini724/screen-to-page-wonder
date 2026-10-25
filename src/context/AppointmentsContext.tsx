@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { doctors, type Doctor, type PatientAppointment } from "@/data/appointments";
 import {
-  addReview, availableSlots, cancelAppointment, demoAppointments, parseLocal, rescheduleAppointment, type Result,
+  addReview, availableSlots, bookAppointment, cancelAppointment, demoAppointments, parseLocal, rescheduleAppointment, type Result,
 } from "@/lib/appointments";
 import { useAuth } from "./AuthContext";
 
@@ -71,10 +71,7 @@ export function AppointmentsProvider({ children }: { children: ReactNode }) {
     error,
     getDoctor: (id) => doctors.find((d) => d.id === id),
     slotsFor: (doctorId, day, ignoreId) => availableSlots(appointments, doctorId, day, new Date(), ignoreId),
-    book: (doctorId, start, reason) => commit((list) => {
-      if (availableSlots(list, doctorId, parseLocal(start)).indexOf(start) === -1) return { ok: false, error: "Ce créneau n'est plus disponible." };
-      return { ok: true, list: [...list, { id: crypto.randomUUID(), doctorId, start, durationMin: 30, reason, status: "attente" }] };
-    }),
+    book: (doctorId, start, reason) => commit((list) => bookAppointment(list, { id: crypto.randomUUID(), doctorId, start, reason })),
     cancel: (id, reason) => commit((list) => cancelAppointment(list, id, reason)),
     reschedule: (id, newStart) => commit((list) => rescheduleAppointment(list, id, newStart)),
     review: (id, rating, comment) => commit((list) => addReview(list, id, rating, comment)),

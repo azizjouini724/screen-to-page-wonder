@@ -56,3 +56,22 @@ describe("rendez-vous", () => {
     expect(ics).toContain("DTEND:20261027T103000");
   });
 });
+
+describe("réservation", () => {
+  it("une réservation est confirmée et le créneau n'est plus proposé", async () => {
+    const { bookAppointment } = await import("@/lib/appointments");
+    const r = bookAppointment([], { id: "n", doctorId: "d1", start: "2026-10-27T11:00", reason: "Toux" }, now);
+    expect(r.ok && r.list[0]?.status).toBe("confirme");
+    if (r.ok) {
+      expect(availableSlots(r.list, "d1", new Date(2026, 9, 27), now)).not.toContain("2026-10-27T11:00");
+      expect(bookAppointment(r.list, { id: "m", doctorId: "d1", start: "2026-10-27T11:00", reason: "x" }, now).ok).toBe(false);
+    }
+  });
+  it("le motif est obligatoire", async () => {
+    const { bookAppointment } = await import("@/lib/appointments");
+    expect(bookAppointment([], { id: "n", doctorId: "d1", start: "2026-10-27T11:00", reason: "  " }, now).ok).toBe(false);
+  });
+  it("pas de réservation au-delà de 14 jours", () => {
+    expect(availableSlots([], "d1", new Date(2026, 10, 9), now)).toEqual([]);
+  });
+});

@@ -1,3 +1,4 @@
+import { isPrebooked } from "@/data/doctors";
 import { SLOT_TIMES, type Doctor, type PatientAppointment, type Review } from "@/data/appointments";
 
 export const pad = (n: number) => String(n).padStart(2, "0");
@@ -11,13 +12,45 @@ export const parseLocal = (s: string) => {
 
 /** Un créneau est occupé s'il existe un rendez-vous non annulé du même médecin à la même heure. */
 export function isSlotTaken(list: PatientAppointment[], doctorId: string, start: string, ignoreId?: string) {
-  return list.some((a) => a.id !== ignoreId && a.doctorId === doctorId && a.start === start && a.status !== "annule");
+  return isPrebooked(doctorId, start) || list.some((a) => a.id !== ignoreId && a.doctorId === doctorId && a.start === start && a.status !== "annule");
 }
+
+export const BOOKING_WINDOW_DAYS = 14;
 
 export function isBookableDay(d: Date, now = new Date()) {
   const day = d.getDay();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  return day !== 0 && day !== 6 && d >= today;
+  const last = new Date(today.getFullYear(), today.getMonth(), today.getDate() + BOOKING_WINDOW_DAYS);
+  return day !== 0 && day !== 6 && d >= today && d <= last;
+}
+
+export type SlotState = { start: string; time: string; free: boolean };
+
+/** Tous les créneaux d'une journée, avec leur état (libre ou déjà pris / passé). */
+export function daySlots(list: PatientAppointment[], doctorId: string, day: Date, now = new Date(), ignoreId?: string): SlotState[] {
+  if (!isBookableDay(day, now)) return [];
+  const key = toDateKey(day);
+  return SLOT_TIMES.map((t) => {
+    const start = `${key}T${t}`;
+    return { start, time: t, free: parseLocal(start) > now && !isSlotTaken(list, doctorId, start, ignoreId) };
+  });
+}
+
+export function nextAvailable(list: PatientAppointment[], doctorId: string, now = new Date()): string | null {
+  for (let i = 0; i <= BOOKING_WINDOW_DAYS; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
+    const s = availableSlots(list, doctorId, d, now)[0];
+    if (s) return s;
+  }
+  return null;
+}
+
+/** Réserve un créneau ; refuse s'il est pris, passé ou hors de la fenêtre de réservation. */
+export function bookAppointment(list: PatientAppointment[], input: { id: string; doctorId: string; start: string; reason: string }, now = new Date()): Result {
+  const reason = input.reason.trim();
+  if (!reason) return { ok: false, error: "Indiquez le motif de la consultation." };
+  if (!availableSlots(list, input.doctorId, parseLocal(input.start), now).includes(input.start)) return { ok: false, error: "Ce créneau n'est plus disponible. Choisissez-en un autre." };
+  return { ok: true, list: [...list, { id: input.id, doctorId: input.doctorId, start: input.start, durationMin: 30, reason: reason.slice(0, 300), status: "confirme", createdAt: now.toISOString() }] };
 }
 
 export function availableSlots(list: PatientAppointment[], doctorId: string, day: Date, now = new Date(), ignoreId?: string) {
