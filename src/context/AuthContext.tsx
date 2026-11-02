@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import { demoAccounts, type AppUser, type Role, type StoredAccount } from "@/data/auth";
 import { findAccount } from "@/lib/auth";
+import { passwordDigest, validNewPassword } from "@/lib/settings";
 
 const SESSION_KEY = "cc_session";
 const ACCOUNTS_KEY = "cc_accounts";
@@ -15,6 +16,8 @@ type AuthValue = {
   ready: boolean;
   login: (email: string, password: string, remember: boolean) => Promise<AppUser | null>;
   logout: () => void;
+  changePassword: (old: string, next: string, confirmation: string) => Promise<boolean>;
+  deleteAccount: () => void;
   register: (input: RegisterInput) => Promise<{ ok: true; user: AppUser } | { ok: false; error: string }>;
 };
 
@@ -32,14 +35,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(SESSION_KEY) || sessionStorage.getItem(SESSION_KEY);
-      if (raw) setUser(JSON.parse(raw));
+      if (raw) {
+        const session = JSON.parse(raw);
+        const deleted: string[] = JSON.parse(localStorage.getItem("cc_deleted_accounts") || "[]");
+        if (!deleted.includes(session.id)) setUser(session);
+      }
     } catch { /* ignore */ }
     setReady(true);
   }, []);
 
   const login = useCallback(async (email: string, password: string, remember: boolean) => {
     await wait(700);
-    const u = findAccount([...demoAccounts, ...readAccounts()], email, password);
+    const accounts = [...readAccounts(), ...demoAccounts];
+    const account = accounts.find(a => a.email.toLowerCase() === email.trim().toLowerCase());
+    const deleted: string[] = JSON.parse(localStorage.getItem("cc_deleted_accounts") || "[]");
+    const digest = account ? localStorage.getItem(`cc_password_${account.id}`) : null;
+    const u = account && !deleted.includes(account.id) && (!digest || digest === await passwordDigest(password)) ? findAccount(accounts, email, digest ? account.password : password) : null;
     if (u) {
       (remember ? localStorage : sessionStorage).setItem(SESSION_KEY, JSON.stringify(u));
       setUser(u);
@@ -69,8 +80,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { ok: true as const, user: u };
   }, []);
 
+  const changePassword = async (old: string, next: string, confirmation: string) => {
+    if (!user || !validNewPassword(old, next, confirmation)) return false;
+    const account = [...readAccounts(), ...demoAccounts].find(a => a.id === user.id);
+    const digest = localStorage.getItem(`cc_password_${user.id}`);
+    if (digest ? digest !== await passwordDigest(old) : account?.password !== old) return false;
+    localStorage.setItem(`cc_password_${user.id}`, await passwordDigest(next));
+    return true;
+  };
+  const deleteAccount = () => {
+    if (!user) return;
+    const deleted: string[] = JSON.parse(localStorage.getItem("cc_deleted_accounts") || "[]");
+    localStorage.setItem("cc_deleted_accounts", JSON.stringify([...new Set([...deleted, user.id])]));
+    localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(readAccounts().filter(a => a.id !== user.id)));
+    for (const key of Object.keys(localStorage)) if (key.startsWith("cc_") && key.endsWith(`_${user.id}`)) localStorage.removeItem(key);
+    logout();
+  };
+
   return (
-    <AuthContext.Provider value={{ user, role: user?.role ?? null, ready, login, logout, register }}>
+    <AuthContext.Provider value={{ user, role: user?.role ?? null, ready, login, logout, register, changePassword, deleteAccount }}>
       {children}
     </AuthContext.Provider>
   );
