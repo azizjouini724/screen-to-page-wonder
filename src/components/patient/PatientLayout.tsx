@@ -1,13 +1,15 @@
 import { useState, type ReactNode } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { Bell, ChevronsLeft, LogOut, Search, User } from "lucide-react";
+import { ChevronsLeft, LogOut, Search, User } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/context/AuthContext";
-import { bottomLinks, notificationCount, sidebarLinks } from "@/data/patient";
+import { bottomLinks, sidebarLinks } from "@/data/patient";
+import { NotificationBell } from "@/components/patient/NotificationBell";
+import { useSettings } from "@/context/SettingsContext";
 import logo from "@/assets/logo.png";
 import { cn } from "@/lib/utils";
 
@@ -76,15 +78,6 @@ export function BottomNav() {
   );
 }
 
-function NotificationBell() {
-  return (
-    <Button variant="ghost" size="icon" className="relative rounded-full" aria-label={`Notifications, ${notificationCount} non lues`}>
-      <Bell className="h-5 w-5" />
-      <span className="absolute right-1 top-1 grid h-4 min-w-4 place-items-center rounded-full bg-destructive px-1 text-[10px] font-bold text-destructive-foreground">{notificationCount}</span>
-    </Button>
-  );
-}
-
 function TopBar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -124,8 +117,9 @@ function TopBar() {
 
 export function PatientLayout({ children }: { children: ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
+  const { settings } = useSettings();
   return (
-    <div className="flex min-h-screen w-full bg-gradient-soft">
+    <div className={cn("flex min-h-screen w-full bg-gradient-soft", settings.display.textSize === "large" && "patient-large-text")}>
       <SidebarNav collapsed={collapsed} onToggle={() => setCollapsed((c) => !c)} />
       <div className="flex min-w-0 flex-1 flex-col">
         <TopBar />

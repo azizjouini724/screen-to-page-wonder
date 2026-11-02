@@ -107,3 +107,12 @@
   transition: opacity 600ms ease, transform 600ms ease;
   &.is-visible { opacity: 1; transform: none; }
 }
+
+.patient-large-text { font-size: 1.125rem; }
+.patient-large-text .text-xs { font-size: 0.875rem; }
+.patient-large-text .text-sm { font-size: 1rem; }
+.patient-large-text .text-base { font-size: 1.125rem; }
+.patient-large-text .text-lg { font-size: 1.25rem; }
+.patient-large-text .text-xl { font-size: 1.375rem; }
+.patient-large-text .text-2xl { font-size: 1.625rem; }
+.patient-large-text .text-3xl { font-size: 2rem; }
